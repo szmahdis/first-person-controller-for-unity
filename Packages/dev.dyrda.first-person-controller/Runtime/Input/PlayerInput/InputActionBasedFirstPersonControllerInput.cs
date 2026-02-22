@@ -27,6 +27,7 @@ namespace DyrdaDev.FirstPersonController
 
         [Header("Look Properties")]
         [SerializeField] private float lookSmoothingFactor = 14.0f;
+        [SerializeField] private float lookSensitivity = 10f;
 
         private FirstPersonInputAction _controls;
 
@@ -71,9 +72,12 @@ namespace DyrdaDev.FirstPersonController
                 {
                     var rawLookValue = _controls.Character.Look.ReadValue<Vector2>();
 
+                    float targetX = rawLookValue.x * lookSensitivity;
+                    float targetY = rawLookValue.y * lookSensitivity;
+
                     smoothLookValue = new Vector2(
-                        Mathf.Lerp(smoothLookValue.x, rawLookValue.x, lookSmoothingFactor * Time.deltaTime),
-                        Mathf.Lerp(smoothLookValue.y, rawLookValue.y, lookSmoothingFactor * Time.deltaTime)
+                        Mathf.Lerp(smoothLookValue.x, targetX, lookSmoothingFactor * Time.deltaTime),
+                        Mathf.Lerp(smoothLookValue.y, targetY, lookSmoothingFactor * Time.deltaTime)
                     );
 
                     return smoothLookValue;
